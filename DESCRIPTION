@@ -1,0 +1,29 @@
+Package: micro97BCpkg
+Title: Code for the analysis on microbiome and obesity in "Children of 1997" birth cohort.
+Version: 0.0.0.9000
+Authors@R: 
+    person("Baoting", "HE", ,"hbaoting@hku.hk", role = c("aut", "cre"))
+Description: What the package does (one paragraph).
+License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
+    license
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.2
+Imports: 
+    beeswarm,
+    dplyr,
+    ggplot2,
+    ggpubr,
+    grid,
+    gridExtra,
+    mr.raps,
+    reshape2,
+    stats,
+    TwoSampleMR,
+    vegan
+Depends: 
+    tidyverse
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr
