@@ -43,9 +43,9 @@ This is the source code for the study in microbiome and obesity.
 
 # Step 1: Data preparation
 
-The study is based on the data obtained from "Children of 1997" Hong Kong Chinese birth cohort. Based on the ethic approval of this study, research data is not publicly shared currently. Collaboration is welcomed.
+The study is based on the data obtained from "Children of 1997" Hong Kong Chinese birth cohort. Based on the ethic approval of this study, research data is not publicly shared currently.
 
-1.  Data preparation and data cleaning for microbiome abundance data
+**Data preparation and data cleaning for microbiome abundance data**
 
 ```{r data preparation, warning=FALSE, include=FALSE}
 ##Read the data
@@ -95,9 +95,9 @@ metaphlan_species <- metaphlan_species[-c(which(rowSums(metaphlan_species)==0)),
 
 ```
 
-plot number of samples across different counts of species over 0.05 abundance
+**Plot samples by counts of species over 0.05 abundance**
 
-```{r plot to see the distribution of different counts of species, warning=FALSE}
+```{r plot to see the distribution of different counts of species, fig.height=5, fig.width=7, warning=FALSE}
 sample_prevalence <- as.data.frame(rowSums(metaphlan_species>0.05))
 
 colnames(sample_prevalence) <- "Number_of_samples"
@@ -123,8 +123,6 @@ metaphlan_species_raw <- metaphlan_species ##raw data
 metaphlan_species <- asin(sqrt(metaphlan_species))   ##Arcsine Transformation
 ```
 
-combine data
-
 ```{r combine microbiome abundance with clinical data, warning=FALSE}
 #match the specie abundance data with clinical data
 metaphlan_species$sex <- clinical_data[match(rownames(metaphlan_species),clinical_data$Lab.ID),"sex"]
@@ -143,7 +141,7 @@ for (i in 1:nrow(metaphlan_species)) {
 metaphlan_species <- metaphlan_species[order(metaphlan_species$subclass),]
 ```
 
-```{r phyla data, warning=FALSE}
+```{r phyla data, warning=FALSE,fig.height=5, fig.width=7}
 metaphlan_Phyla <- metaphlan_abundance[grep("p__",row.names(metaphlan_abundance)),]
 metaphlan_Phyla <- metaphlan_Phyla[-grep("c__",row.names(metaphlan_Phyla)),]
 
@@ -197,7 +195,9 @@ for (i in 1:nrow(metaphlan_Phyla)) {
 
 # Step 2: Data analysis for comparison of species and pathways between obesity and control
 
-```{r F/B ratio, warning=FALSE}
+1.  **F/B Ratio**
+
+```{r F/B ratio, warning=FALSE,fig.height=5, fig.width=8}
 metaphlan_Phyla$F_B_ratio<-metaphlan_Phyla$Firmicutes/metaphlan_Phyla$Bacteroidetes
 metaphlan_Phyla<- metaphlan_Phyla[order(metaphlan_Phyla$subclass),]
 
@@ -210,7 +210,9 @@ beeplot(metaphlan_Phyla_control[,"F_B_ratio"],metaphlan_Phyla_case[,"F_B_ratio"]
 
 ```
 
-```{r Top 15 species in obesity and control, warning=FALSE}
+2.  **Top 15 species in obesity and control**
+
+```{r Top 15 species in obesity and control,fig.height=5, fig.width=8, warning=FALSE}
 library(pals)
 # pal.bands(alphabet, alphabet2, cols25, glasbey, kelly, polychrome, 
 #           stepped, tol, watlington,
@@ -267,7 +269,9 @@ ggpubr::ggarrange(p1,p2,ncol=2,nrow=1)
 
 ```
 
-```{r Alpha diversity, warning=FALSE}
+3.  Alpha diversity
+
+```{r Alpha diversity,fig.height=5, fig.width=7,  warning=FALSE}
 Shannon_diversity(metaphlan_species_all)
 Pielou_evenness(metaphlan_species_all)
 simpson_diversity(metaphlan_species_all)
@@ -275,7 +279,10 @@ simpson_diversity(metaphlan_species_all)
 
 ```
 
-```{r Beta diversity (1)PCoA plot, warning=FALSE}
+4.  **Beta diversity**
+
+```{r Beta diversity (1)PCoA plot, fig.height=8, fig.width=8, warning=FALSE}
+
 metaphlan_species$Overweight <- as.factor(metaphlan_species$Overweight)
 
 
@@ -321,7 +328,9 @@ res.perm.matched<-permanovaFL(formula=testing.table|as.factor(subclass)~Overweig
 t(res.perm.matched)
 ```
 
-```{r  Enrichment in species and pathways, warning=FALSE}
+5.  **Enrichment in species and pathways**
+
+```{r  Enrichment in species and pathways, warning=FALSE,fig.height=5, fig.width=7}
 #####################species enrichment
 
 metaphlan_species_low <- subset(metaphlan_species,  Overweight == "0",drop = TRUE)
@@ -377,7 +386,7 @@ pathway_abundance_path_new <- pathway_abundance_path
 
 pathway_abundance_path_new <-pathway_abundance_path_new[, order(colSums(pathway_abundance_path_new),decreasing = T)]
 
-colSums(pathway_abundance_path_new)
+#colSums(pathway_abundance_path_new)
 
 keep_going <- TRUE
 i <- 1
@@ -459,9 +468,9 @@ ggplot(data=df.plot,aes(x=Axis.1,y=Axis.2,
   scale_fill_manual(values = c("#e31a1c","#1f78b4"))
 ```
 
-# Step 3:  Conditional logistic regression- considering matching as well as binary outcome
+# Step 3: Conditional logistic regression- considering matching as well as binary outcome
 
-```{r Conditional logistic regression, warning=FALSE}
+```{r Conditional logistic regression,fig.height=12, fig.width=7, warning=FALSE}
 ########: 
 ########Conditional logistic regression- considering matching as well as binary outcome
 

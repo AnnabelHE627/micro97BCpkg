@@ -97,7 +97,7 @@ metaphlan_species <- metaphlan_species[-c(which(rowSums(metaphlan_species)==0)),
 
 **Plot samples by counts of species over 0.05 abundance**
 
-```{r plot to see the distribution of different counts of species, fig.height=5, fig.width=8, warning=FALSE}
+```{r plot to see the distribution of different counts of species, fig.height=5, fig.width=7, warning=FALSE}
 sample_prevalence <- as.data.frame(rowSums(metaphlan_species>0.05))
 
 colnames(sample_prevalence) <- "Number_of_samples"
@@ -141,7 +141,7 @@ for (i in 1:nrow(metaphlan_species)) {
 metaphlan_species <- metaphlan_species[order(metaphlan_species$subclass),]
 ```
 
-```{r phyla data, warning=FALSE,fig.height=5, fig.width=8}
+```{r phyla data, warning=FALSE,fig.height=5, fig.width=7}
 metaphlan_Phyla <- metaphlan_abundance[grep("p__",row.names(metaphlan_abundance)),]
 metaphlan_Phyla <- metaphlan_Phyla[-grep("c__",row.names(metaphlan_Phyla)),]
 
@@ -269,7 +269,9 @@ ggpubr::ggarrange(p1,p2,ncol=2,nrow=1)
 
 ```
 
-```{r Alpha diversity,fig.height=5, fig.width=8,  warning=FALSE}
+3.  Alpha diversity
+
+```{r Alpha diversity,fig.height=5, fig.width=7,  warning=FALSE}
 Shannon_diversity(metaphlan_species_all)
 Pielou_evenness(metaphlan_species_all)
 simpson_diversity(metaphlan_species_all)
@@ -277,7 +279,10 @@ simpson_diversity(metaphlan_species_all)
 
 ```
 
+4.  **Beta diversity**
+
 ```{r Beta diversity (1)PCoA plot, fig.height=8, fig.width=8, warning=FALSE}
+
 metaphlan_species$Overweight <- as.factor(metaphlan_species$Overweight)
 
 
@@ -323,9 +328,9 @@ res.perm.matched<-permanovaFL(formula=testing.table|as.factor(subclass)~Overweig
 t(res.perm.matched)
 ```
 
-**Enrichment in species and pathways**
+5.  **Enrichment in species and pathways**
 
-```{r  Enrichment in species and pathways, warning=FALSE}
+```{r  Enrichment in species and pathways, warning=FALSE,fig.height=5, fig.width=7}
 #####################species enrichment
 
 metaphlan_species_low <- subset(metaphlan_species,  Overweight == "0",drop = TRUE)
@@ -465,7 +470,7 @@ ggplot(data=df.plot,aes(x=Axis.1,y=Axis.2,
 
 # Step 3: Conditional logistic regression- considering matching as well as binary outcome
 
-```{r Conditional logistic regression, warning=FALSE}
+```{r Conditional logistic regression,fig.height=12, fig.width=7, warning=FALSE}
 ########: 
 ########Conditional logistic regression- considering matching as well as binary outcome
 
